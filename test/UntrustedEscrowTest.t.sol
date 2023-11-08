@@ -7,7 +7,7 @@ import {BasicToken} from "../src/BasicToken.sol";
 import {UntrustedEscrow} from "../src/UntrustedEscrow.sol";
 import {DeployTokenAndEscrow} from "../script/DeployTokenAndEscrow.s.sol";
 
-contract BondingCurveTokenTest is StdCheats, Test {
+contract UntrustedEscrowTest is StdCheats, Test {
     BasicToken public basicToken;
     UntrustedEscrow public untrustedEscrow;
     DeployTokenAndEscrow public deployer;
@@ -15,7 +15,7 @@ contract BondingCurveTokenTest is StdCheats, Test {
     address public deployerAddress;
     address public withdrawUser;
 
-    uint256 WAIT_DURATION = 3 days;
+    uint256 constant WAIT_DURATION = 3 days;
 
     function setUp() public {
         deployer = new DeployTokenAndEscrow();

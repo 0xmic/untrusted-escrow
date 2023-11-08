@@ -15,13 +15,13 @@ contract UntrustedEscrow {
     uint256 public constant WAIT_DURATION = 3 days;
 
     /// @notice Address of the buyer.
-    address public buyer;
+    address public immutable buyer;
 
     /// @notice Address of the seller.
-    address public seller;
+    address public immutable seller;
 
     /// @notice The ERC20 token which the buyer will deposit.
-    IERC20 public token;
+    IERC20 public immutable token;
 
     /// @notice The timestamp when the buyer deposited the tokens.
     uint256 public depositTimestamp;
@@ -54,11 +54,11 @@ contract UntrustedEscrow {
     function deposit(uint256 amount) external {
         require(msg.sender == buyer, "Only the buyer can deposit");
         require(amount > 0, "Amount must be greater than 0");
-        token.safeTransferFrom(msg.sender, address(this), amount);
 
         depositTimestamp = block.timestamp;
-
         emit TokensDeposited(buyer, amount, depositTimestamp);
+
+        token.safeTransferFrom(msg.sender, address(this), amount);
     }
 
     /**
@@ -70,8 +70,8 @@ contract UntrustedEscrow {
 
         uint256 amount = token.balanceOf(address(this));
         require(amount > 0, "No tokens to withdraw");
-        token.safeTransfer(seller, amount);
-
         emit TokensWithdrawn(seller, amount);
+
+        token.safeTransfer(seller, amount);
     }
 }
